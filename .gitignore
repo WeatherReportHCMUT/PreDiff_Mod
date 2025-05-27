@@ -1,0 +1,5 @@
+.venv/
+data/
+*_ref/
+__pycache__/
+*pretrained*/
