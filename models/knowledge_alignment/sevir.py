@@ -1,7 +1,7 @@
 from typing import Dict, Any
 import torch
 from .alignment_utils import get_sample_align_fn
-from .models import NoisyCuboidTransformerEncoder
+from models.core_model.cuboid_transformer import NoisyCuboidTransformerEncoder
 
 
 class SEVIRAvgIntensityAlignment():

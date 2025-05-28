@@ -25,7 +25,6 @@ from models.vae import (
 from utils.path import default_exps_dir
 from utils.optim import warmup_lambda
 from datamodule import SEVIRLightningDataModule,vis_sevir_seq
-from utils.device_inspector import print_device_report
 
 
 class VAESEVIRPLModule(pl.LightningModule):

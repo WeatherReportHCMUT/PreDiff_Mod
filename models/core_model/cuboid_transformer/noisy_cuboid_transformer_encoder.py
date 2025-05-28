@@ -8,13 +8,13 @@ import torch
 import torch.nn as nn
 from einops import rearrange
 
-from models.core_model.time_embed import TimeEmbedLayer,TimeEmbedResBlock
-from models.core_model.utils import conv_nd,zero_module,timestep_embedding
-from models.core_model.cuboid_transformer.cuboid_transformer import(
+from ..time_embed import TimeEmbedLayer,TimeEmbedResBlock
+from ..utils import conv_nd,zero_module,timestep_embedding
+from ..cuboid_transformer.cuboid_transformer import(
     PatchMerging3D,PosEmbed,StackCuboidSelfAttentionBlock
 )
-from models.core_model.cuboid_transformer.cuboid_transformer_patterns import CuboidSelfAttentionPatterns
-from models.core_model.utils import apply_initialization,round_to
+from .cuboid_transformer_patterns import CuboidSelfAttentionPatterns
+from ..utils import apply_initialization,round_to
 
 
 class QKVAttention(nn.Module):
