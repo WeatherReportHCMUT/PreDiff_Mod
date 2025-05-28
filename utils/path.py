@@ -2,6 +2,7 @@ import os
 
 # region Filename
 pretrained_sevirlr_vae_name = 'pretrained_sevirlr_vae_8x8x64_v1_2.pt'
+pretrained_sevirlr_alignment_dir = 'pretrained_sevirlr_alignment_avg_x_cuboid_v1.pt'
 # endregion
 
 # region Path

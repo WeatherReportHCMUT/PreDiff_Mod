@@ -528,8 +528,6 @@ class VAESEVIRPLModule(pl.LightningModule):
         self.valid_mse.reset()
         self.valid_mae.reset()
         
-        
-
     def test_step(self, batch, batch_idx, dataloader_idx=0):
         micro_batch_size = batch.shape[self.batch_axis]
         data_idx = int(batch_idx * micro_batch_size)

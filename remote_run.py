@@ -37,7 +37,7 @@ image = (
 def entry():
     import os
     # os.system('pip freeze > /root/logs/requirements.txt')
-    os.system('python -m scripts.train_vae.train_vae_sevirlr --gpus 1 --pretrained --test --cfg /root/scripts/train_vae/cfg.yaml')
+    os.system('python -m scripts.train_alignment.train_sevirlr_avg_x --pretrained --cfg /root/scripts/train_alignment/cfg.yaml')
     # import torch
 
     # if torch.cuda.is_available():
