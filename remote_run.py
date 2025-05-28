@@ -25,7 +25,7 @@ image = (
 
 @app.function(
     image=image,
-    gpu = 'T4',
+    gpu = 'A100-40GB:2',
     timeout = 86400,
     retries = 0,
     volumes = {
@@ -37,7 +37,7 @@ image = (
 def entry():
     import os
     # os.system('pip freeze > /root/logs/requirements.txt')
-    os.system('python -m scripts.train_vae.train_vae_sevirlr --gpus 1 --pretrained --test --cfg /root/scripts/train_vae/cfg.yaml')
+    os.system('python -m scripts.train_diffusion.train_sevirlr_prediff --pretrained --cfg /root/scripts/train_diffusion/cfg.yaml --gpus 2 --nodes 2')
     # import torch
 
     # if torch.cuda.is_available():

@@ -25,7 +25,6 @@ from models.vae import (
 from utils.path import default_exps_dir
 from utils.optim import warmup_lambda
 from datamodule import SEVIRLightningDataModule,vis_sevir_seq
-from utils.device_inspector import print_device_report
 
 
 class VAESEVIRPLModule(pl.LightningModule):
@@ -528,8 +527,6 @@ class VAESEVIRPLModule(pl.LightningModule):
         self.valid_mse.reset()
         self.valid_mae.reset()
         
-        
-
     def test_step(self, batch, batch_idx, dataloader_idx=0):
         micro_batch_size = batch.shape[self.batch_axis]
         data_idx = int(batch_idx * micro_batch_size)
