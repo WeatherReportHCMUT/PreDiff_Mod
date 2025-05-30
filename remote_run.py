@@ -24,7 +24,7 @@ image = (
 
 @app.function(
     image=image,
-    gpu = 'A100',
+    # gpu = 'A100',
     timeout = 86400,
     retries = 0,
     volumes = {
@@ -35,4 +35,4 @@ image = (
 )
 def entry():
     import os
-    os.system('python -m scripts.train_diffusion.train_sevirlr_prediff --cfg ./scripts/train_diffusion/cfg.yaml')
+    os.system('python -m datamodule.sevir_lightning_module')

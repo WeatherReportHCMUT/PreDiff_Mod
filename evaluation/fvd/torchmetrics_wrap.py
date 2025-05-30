@@ -21,7 +21,6 @@ from utils.path import (
 # if _TORCH_FIDELITY_AVAILABLE:
 #     from torch_fidelity.feature_extractor_inceptionv3 import FeatureExtractorInceptionV3
 # else:
-#
 #     class FeatureExtractorInceptionV3(Module):  # type: ignore
 #         pass
 #
