@@ -11,6 +11,9 @@ from torchvision import transforms
 
 from .sevir_dataloader import SEVIRDataLoader
 from .data_utils.augmentation import TransformsFixRotation
+from .sevir_const import(
+    SEVIR_LR_CATALOG,SEVIR_LR_DATA_DIR,SEVIR_LR_H_W_SIZE,SEVIR_LR_INTERVAL_REAL_TIME,SEVIR_LR_RAW_SEQ_LEN
+)
 
 
 class SEVIRTorchDataset(TorchDataset):
@@ -115,7 +118,11 @@ class SEVIRTorchDataset(TorchDataset):
         return self.sevir_dataloader.__len__()
     
 if __name__ == "__main__":
-    torch_ds = SEVIRTorchDataset()
+    torch_ds = SEVIRTorchDataset(
+        raw_seq_len=SEVIR_LR_RAW_SEQ_LEN,
+        sevir_catalog=SEVIR_LR_CATALOG,
+        sevir_data_dir=SEVIR_LR_DATA_DIR
+    )
     print(len(torch_ds))
     for idx,sample in enumerate(torch_ds):
         if idx==5:break

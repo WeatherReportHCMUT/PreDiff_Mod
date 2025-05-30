@@ -14,7 +14,8 @@ from lightning.pytorch.profilers import PyTorchProfiler
 from lightning.pytorch.strategies import DDPStrategy
 from lightning.pytorch.callbacks import (
     Callback, LearningRateMonitor, DeviceStatsMonitor,
-    EarlyStopping, ModelCheckpoint, )
+    EarlyStopping, ModelCheckpoint
+)
 from lightning.pytorch.utilities import grad_norm
 from einops import rearrange
 
@@ -28,7 +29,7 @@ from utils.path import (
     default_pretrained_vae_dir,default_pretrained_alignment_dir
 )
 from utils.optim import disable_train,warmup_lambda
-from utils.layout import layout_to_in_out_slice
+from utils.layout import step_layout_to_in_out_slice
 from evaluation import FrechetVideoDistance,SEVIRSkillScore
 
 
@@ -268,8 +269,12 @@ class PreDiffSEVIRPLModule(LatentDiffusion):
     @staticmethod
     def get_layout_config():
         cfg = OmegaConf.create()
-        cfg.in_len = 10
-        cfg.out_len = 20
+        cfg.in_len = 7
+        cfg.out_len = 6
+        cfg.in_step=1
+        cfg.out_step=1
+        cfg.in_out_diff=1
+        
         cfg.img_height = 128
         cfg.img_width = 128
         cfg.data_channels = 4
@@ -682,10 +687,12 @@ class PreDiffSEVIRPLModule(LatentDiffusion):
     @property
     def in_slice(self):
         if not hasattr(self, "_in_slice"):
-            in_slice, out_slice = layout_to_in_out_slice(
+            in_slice, out_slice = step_layout_to_in_out_slice(
                 layout=self.oc.layout.layout,
-                in_len=self.oc.layout.in_len,
-                out_len=self.oc.layout.out_len)
+                in_len=self.oc.layout.in_len, in_step= self.oc.layout.in_step,
+                out_len=self.oc.layout.out_len, out_step = self.oc.layout.out_step,
+                in_out_diff= self.oc.layout.in_out_diff
+            )
             self._in_slice = in_slice
             self._out_slice = out_slice
         return self._in_slice
@@ -693,10 +700,12 @@ class PreDiffSEVIRPLModule(LatentDiffusion):
     @property
     def out_slice(self):
         if not hasattr(self, "_out_slice"):
-            in_slice, out_slice = layout_to_in_out_slice(
+            in_slice, out_slice = step_layout_to_in_out_slice(
                 layout=self.oc.layout.layout,
-                in_len=self.oc.layout.in_len,
-                out_len=self.oc.layout.out_len)
+                in_len=self.oc.layout.in_len, in_step= self.oc.layout.in_step,
+                out_len=self.oc.layout.out_len, out_step = self.oc.layout.out_step,
+                in_out_diff= self.oc.layout.in_out_diff
+            )
             self._in_slice = in_slice
             self._out_slice = out_slice
         return self._out_slice

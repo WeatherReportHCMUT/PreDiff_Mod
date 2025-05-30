@@ -1,7 +1,6 @@
 from modal import App,Image,gpu,Volume,Image
 import os
 
-model_name = "switch_transformer"
 app = App(f'PreDiff Sample Run')
 
 image = (
@@ -25,7 +24,7 @@ image = (
 
 @app.function(
     image=image,
-    gpu = 'A100-40GB:2',
+    gpu = 'A100',
     timeout = 86400,
     retries = 0,
     volumes = {
@@ -36,15 +35,4 @@ image = (
 )
 def entry():
     import os
-    # os.system('pip freeze > /root/logs/requirements.txt')
-    os.system('python -m scripts.train_diffusion.train_sevirlr_prediff --pretrained --cfg /root/scripts/train_diffusion/cfg.yaml --gpus 2 --nodes 2')
-    # import torch
-
-    # if torch.cuda.is_available():
-    #     device_count = torch.cuda.device_count()
-    #     print(f"Number of available GPUs: {device_count}")
-    #     for i in range(device_count):
-    #         gpu_name = torch.cuda.get_device_name(i)
-    #         print(f"GPU {i}: {gpu_name}")
-    # else:
-    #     print("No GPU available.")
+    os.system('python -m scripts.train_diffusion.train_sevirlr_prediff --cfg ./scripts/train_diffusion/cfg.yaml')

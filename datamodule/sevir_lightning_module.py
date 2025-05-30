@@ -80,6 +80,7 @@ class SEVIRLightningDataModule(LightningDataModule):
         self.val_ratio = val_ratio
         
     def _config_sevir(self,sevir_dir:Optional[str], dataset_name:Literal['sevir','sevirlr']):
+        assert dataset_name in ['sevir','sevirlr'], f"Unknown dataset configuration {dataset_name}"
         sevir_dir = os.path.abspath(sevir_dir) if sevir_dir is not None else None
         if dataset_name == "sevir":
             if sevir_dir is None:
