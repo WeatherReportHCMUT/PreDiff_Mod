@@ -19,6 +19,8 @@ imageio
 scikit-image
 matplotlib
 tensorboard
+python-dotenv
 diffusers==0.13.0
+wandb>=0.12.10
 taming-transformers==0.0.1
 huggingface-hub==0.25.2

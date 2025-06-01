@@ -46,7 +46,7 @@ logging:
   monitor_lr: true
   monitor_device: false
   track_grad_norm: -1
-  use_wandb: false
+  use_wandb: true
 trainer:
   check_val_every_n_epoch: 5
   log_step_ratio: 0.001
