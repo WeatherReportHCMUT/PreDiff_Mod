@@ -345,8 +345,10 @@ class VAESEVIRPLModule(pl.LightningModule):
         csv_logger = pl_loggers.CSVLogger(save_dir=self.save_dir)
         logger += [tb_logger, csv_logger]
         if self.oc.logging.use_wandb:
-            wandb_logger = pl_loggers.WandbLogger(project=self.oc.logging.logging_prefix,
-                                                  save_dir=self.save_dir)
+            wandb_logger = pl_loggers.WandbLogger(
+                project=self.oc.logging.logging_prefix,
+                save_dir=self.save_dir
+            )
             logger += [wandb_logger, ]
 
         log_every_n_steps = max(1, int(self.oc.trainer.log_step_ratio * self.total_num_steps))

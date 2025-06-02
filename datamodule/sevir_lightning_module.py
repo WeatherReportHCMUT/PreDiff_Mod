@@ -80,6 +80,7 @@ class SEVIRLightningDataModule(LightningDataModule):
         self.val_ratio = val_ratio
         
     def _config_sevir(self,sevir_dir:Optional[str], dataset_name:Literal['sevir','sevirlr']):
+        assert dataset_name in ['sevir','sevirlr'], f"Unknown dataset configuration {dataset_name}"
         sevir_dir = os.path.abspath(sevir_dir) if sevir_dir is not None else None
         if dataset_name == "sevir":
             if sevir_dir is None:
@@ -199,3 +200,24 @@ class SEVIRLightningDataModule(LightningDataModule):
     @property
     def num_test_samples(self):
         return len(self.sevir_test)
+
+if __name__ == "__main__":
+    dm = SEVIRLightningDataModule(
+        seq_len=22,
+        sample_mode='sequent',
+        stride=3,
+        layout='NTHWC',
+        aug_mode='2',
+        ret_contiguous=False,
+        dataset_name='sevirlr',
+        start_date=None,
+        train_test_split_date=[2019, 6, 1],
+        end_date=None,
+        val_ratio=0.1,
+        num_workers=8
+    )
+    dm.prepare_data()
+    dm.setup()
+    print(dm.num_train_samples)
+    print(dm.num_val_samples)
+    print(dm.num_test_samples)

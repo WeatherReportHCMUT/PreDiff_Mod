@@ -22,7 +22,7 @@ from models.vae import AutoencoderKL
 from datamodule import SEVIRLightningDataModule
 from utils.path import default_pretrained_vae_dir,default_exps_dir
 from utils.optim import warmup_lambda
-from utils.layout import layout_to_in_out_slice
+from utils.layout import step_layout_to_in_out_slice
 
 class SEVIRAlignmentPLModule(AlignmentPL):
     def __init__(
@@ -128,8 +128,12 @@ class SEVIRAlignmentPLModule(AlignmentPL):
     @staticmethod
     def get_layout_config():
         cfg = OmegaConf.create()
-        cfg.in_len = 10
-        cfg.out_len = 20
+        cfg.in_len = 7
+        cfg.out_len = 6
+        cfg.in_step=1
+        cfg.out_step=1
+        cfg.in_out_diff=1
+        
         cfg.img_height = 128
         cfg.img_width = 128
         cfg.data_channels = 4
@@ -229,6 +233,9 @@ class SEVIRAlignmentPLModule(AlignmentPL):
         cfg.img_width = 128
         cfg.in_len = 7
         cfg.out_len = 6
+        cfg.in_step=1
+        cfg.out_step=1
+        cfg.in_out_diff=1
         cfg.seq_len = 13
         cfg.plot_stride = 1
         cfg.interval_real_time = 10
@@ -464,10 +471,12 @@ class SEVIRAlignmentPLModule(AlignmentPL):
     @property
     def in_slice(self):
         if not hasattr(self, "_in_slice"):
-            in_slice, out_slice = layout_to_in_out_slice(
+            in_slice, out_slice = step_layout_to_in_out_slice(
                 layout=self.oc.layout.layout,
-                in_len=self.oc.layout.in_len,
-                out_len=self.oc.layout.out_len)
+                in_len=self.oc.layout.in_len, in_step= self.oc.layout.in_step,
+                out_len=self.oc.layout.out_len, out_step = self.oc.layout.out_step,
+                in_out_diff= self.oc.layout.in_out_diff
+            )
             self._in_slice = in_slice
             self._out_slice = out_slice
         return self._in_slice
@@ -475,10 +484,12 @@ class SEVIRAlignmentPLModule(AlignmentPL):
     @property
     def out_slice(self):
         if not hasattr(self, "_out_slice"):
-            in_slice, out_slice = layout_to_in_out_slice(
+            in_slice, out_slice = step_layout_to_in_out_slice(
                 layout=self.oc.layout.layout,
-                in_len=self.oc.layout.in_len,
-                out_len=self.oc.layout.out_len)
+                in_len=self.oc.layout.in_len, in_step= self.oc.layout.in_step,
+                out_len=self.oc.layout.out_len, out_step = self.oc.layout.out_step,
+                in_out_diff= self.oc.layout.in_out_diff
+            )
             self._in_slice = in_slice
             self._out_slice = out_slice
         return self._out_slice

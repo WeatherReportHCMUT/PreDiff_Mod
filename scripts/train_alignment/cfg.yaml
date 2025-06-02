@@ -1,14 +1,30 @@
+layout:
+  in_len: &in_len 4
+  out_len: &out_len 1
+  in_step: &in_step 1
+  out_step: &out_step 1
+  in_out_diff: &in_out_diff 18
+
+  img_height: &img_height 384
+  img_width: &img_width 384
+  data_channels: 1
+  layout: "NTHWC"
 dataset:
-  dataset_name: "sevirlr"
-  img_height: 128
-  img_width: 128
-  in_len: 7
-  out_len: 6
-  seq_len: 13
+  dataset_name: "sevir"
+  img_height: *img_height
+  img_width: *img_width
+
+  in_len: *in_len
+  out_len: *out_len
+  in_step: *in_step
+  out_step: *out_step
+  in_out_diff: *in_out_diff
+  seq_len: &seq_len 22
+
   plot_stride: 1
-  interval_real_time: 10
+  interval_real_time: 5
   sample_mode: "sequent"
-  stride: 6
+  stride: 3
   layout: "NTHWC"
   start_date: null
   train_test_split_date: [2019, 6, 1]
@@ -18,13 +34,6 @@ dataset:
   metrics_list: ['csi', 'pod', 'sucr', 'bias']
   threshold_list: [16, 74, 133, 160, 181, 219]
   aug_mode: "2"
-layout:
-  in_len: 7
-  out_len: 6
-  img_height: 128
-  img_width: 128
-  data_channels: 1
-  layout: "NTHWC"
 optim:
   total_batch_size: 128
   micro_batch_size: 32
@@ -45,7 +54,7 @@ optim:
   plateau_patience: 10
   # early stopping
   monitor: "val_loss"
-  early_stop: false
+  early_stop: true
   early_stop_mode: "min"
   early_stop_patience: 100
   save_top_k: 3
@@ -54,7 +63,7 @@ logging:
   monitor_lr: true
   monitor_device: false
   track_grad_norm: -1
-  use_wandb: false
+  use_wandb: true
   profiler: null
 trainer:
   check_val_every_n_epoch: 5
@@ -89,7 +98,7 @@ model:
     alignment_type: "avg_x"
     model_type: "cuboid"
     model_args:
-      input_shape: [ 6, 16, 16, 64 ]
+      input_shape: [*out_len, 16, 16, 64 ]
       out_channels: 1
       base_units: 128
       scale_alpha: 1.0
@@ -133,7 +142,7 @@ model:
       # readout
       pool: "attention"
       readout_seq: true
-      out_len: 6
+      out_len: *out_len
   vae:
     pretrained_ckpt_path: "pretrained_sevirlr_vae_8x8x64_v1_2.pt"
     data_channels: 1

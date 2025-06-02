@@ -1,14 +1,30 @@
+layout:
+  in_len: &in_len 4
+  out_len: &out_len 1
+  in_step: &in_step 1
+  out_step: &out_step 1
+  in_out_diff: &in_out_diff 18
+
+  img_height: &img_height 384
+  img_width: &img_width 384
+  data_channels: 1
+  layout: "NTHWC"
 dataset:
-  dataset_name: "sevirlr"
-  img_height: 128
-  img_width: 128
-  in_len: 7
-  out_len: 6
-  seq_len: 13
+  dataset_name: "sevir"
+  img_height: *img_height
+  img_width: *img_width
+
+  in_len: *in_len
+  out_len: *out_len
+  in_step: *in_step
+  out_step: *out_step
+  in_out_diff: *in_out_diff
+  seq_len: &seq_len 22
+
   plot_stride: 1
-  interval_real_time: 10
+  interval_real_time: 5
   sample_mode: "sequent"
-  stride: 6
+  stride: 3
   layout: "NTHWC"
   start_date: null
   train_test_split_date: [2019, 6, 1]
@@ -18,18 +34,8 @@ dataset:
   metrics_list: ['csi', 'pod', 'sucr', 'bias']
   threshold_list: [16, 74, 133, 160, 181, 219]
   aug_mode: "2"
-layout:
-  in_len: 7
-  out_len: 6
-  in_step: &in_step 1
-  out_step: &out_step 1
-  in_out_diff: &in_out_diff 1
-  img_height: 128
-  img_width: 128
-  data_channels: 1
-  layout: "NTHWC"
 optim:
-  total_batch_size: 8
+  total_batch_size: 64
   micro_batch_size: 2
   seed: 0
   float32_matmul_precision: "high"
@@ -80,7 +86,7 @@ eval:
   fvd_features: 400
 model:
   diffusion:
-    data_shape: [6, 128, 128, 1]
+    data_shape: [*out_len, *img_height, *img_width, 1]
     beta_schedule: "linear"
     use_ema: true
     log_every_t: 100
@@ -96,20 +102,20 @@ model:
     learn_logvar: true
     logvar_init: 0.
     # latent diffusion
-    latent_shape: [6, 16, 16, 64]
+    latent_shape: [*out_len, 16, 16, 64]
     cond_stage_model: "__is_first_stage__"
     num_timesteps_cond: null
     cond_stage_trainable: false
     cond_stage_forward: null
     scale_by_std: false
     scale_factor: 1.0
-    latent_cond_shape: [7, 16, 16, 64]
+    latent_cond_shape: [*in_len, 16, 16, 64]
   align:
     alignment_type: "avg_x"
     guide_scale: 50.0
     model_type: "cuboid"
     model_args:
-      input_shape: [6, 16, 16, 64]
+      input_shape: [*out_len, 16, 16, 64]
       out_channels: 1
       base_units: 128
       scale_alpha: 1.0
@@ -153,11 +159,11 @@ model:
       # readout
       pool: "attention"
       readout_seq: true
-      out_len: 6
+      out_len: *out_len
     model_ckpt_path: "pretrained_sevirlr_alignment_avg_x_cuboid_v1.pt"
   latent_model:
-    input_shape: [7, 16, 16, 64]
-    target_shape: [6, 16, 16, 64]
+    input_shape: [*in_len, 16, 16, 64]
+    target_shape: [*out_len, 16, 16, 64]
     base_units: 256
     # block_units: null
     scale_alpha: 1.0

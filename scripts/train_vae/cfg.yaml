@@ -1,12 +1,12 @@
 dataset:
-  dataset_name: "sevirlr"
-  img_height: 128
-  img_width: 128
+  dataset_name: "sevir"
+  img_height: 384
+  img_width: 384
   in_len: 0
   out_len: 1
   seq_len: 1
   plot_stride: 1
-  interval_real_time: 10
+  interval_real_time: 5
   sample_mode: "sequent"
   stride: 1
   layout: "NTHWC"
@@ -37,16 +37,16 @@ optim:
   warmup_min_lr_ratio: 0.1
   # early stopping
   monitor: "val/total_loss"
-  early_stop: false
+  early_stop: true
   early_stop_mode: "min"
   early_stop_patience: 5
-  save_top_k: -1
+  save_top_k: 3
 logging:
   logging_prefix: "VAE_GAN_SEVIR-LR"
   monitor_lr: true
   monitor_device: false
   track_grad_norm: -1
-  use_wandb: false
+  use_wandb: true
 trainer:
   check_val_every_n_epoch: 5
   log_step_ratio: 0.001
