@@ -5,14 +5,14 @@ layout:
   out_step: &out_step 1
   in_out_diff: &in_out_diff 18
 
-  img_height: 128
-  img_width: 128
+  img_height: &img_height 384
+  img_width: &img_width 384
   data_channels: 1
   layout: "NTHWC"
 dataset:
-  dataset_name: "sevirlr"
-  img_height: 128
-  img_width: 128
+  dataset_name: "sevir"
+  img_height: *img_height
+  img_width: *img_width
 
   in_len: *in_len
   out_len: *out_len
@@ -22,7 +22,7 @@ dataset:
   seq_len: &seq_len 22
 
   plot_stride: 1
-  interval_real_time: 10
+  interval_real_time: 5
   sample_mode: "sequent"
   stride: 3
   layout: "NTHWC"
@@ -54,7 +54,7 @@ optim:
   plateau_patience: 10
   # early stopping
   monitor: "val_loss"
-  early_stop: false
+  early_stop: true
   early_stop_mode: "min"
   early_stop_patience: 100
   save_top_k: 3
@@ -63,7 +63,7 @@ logging:
   monitor_lr: true
   monitor_device: false
   track_grad_norm: -1
-  use_wandb: false
+  use_wandb: true
   profiler: null
 trainer:
   check_val_every_n_epoch: 5
