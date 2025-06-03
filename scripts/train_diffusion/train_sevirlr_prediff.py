@@ -13,6 +13,9 @@ from utils.pl_checkpoint import pl_load
 
 pytorch_state_dict_name = "sevirlr_earthformerunet.pt"
 
+from dotenv import load_dotenv
+_ = load_dotenv('./.env')
+
 def get_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--save', default='tmp_sevirlr', type=str)

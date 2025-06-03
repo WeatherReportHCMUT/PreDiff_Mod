@@ -54,7 +54,7 @@ optim:
   # early stopping
   monitor: "val/loss"
   # monitor: "valid_loss_epoch"
-  early_stop: false
+  early_stop: true
   early_stop_mode: "min"
   early_stop_patience: 100
   save_top_k: 3
