@@ -16,6 +16,8 @@ from utils.path import (
     default_pretrained_vae_dir
 )
 
+from dotenv import load_dotenv
+_ = load_dotenv('./.env')
 
 pytorch_state_dict_name = "sevirlr_vae.pt"
 pytorch_loss_state_dict_name = "sevirlr_vae_loss.pt"

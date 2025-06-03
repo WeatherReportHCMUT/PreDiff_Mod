@@ -11,6 +11,9 @@ from .alignment_lightning_module import SEVIRAlignmentPLModule
 from utils.pl_checkpoint import pl_load
 from utils.path import default_pretrained_alignment_dir,pretrained_sevirlr_alignment_name
 
+from dotenv import load_dotenv
+_ = load_dotenv('./.env')
+
 pytorch_state_dict_name = "sevirlr_alignment_avgx.pt"
 
 def get_parser():
